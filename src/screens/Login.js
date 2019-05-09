@@ -14,7 +14,7 @@ export default class Login extends Component{
                     </View>
                     <View style={styles.bottomView}>
                         <TextInput style={styles.input}
-                            placeholder='EMAIL'
+                            placeholder='EMAILL'
                             keyboardType={'email-address'}
                             autoCapitalize='none' />
                         <TextInput style={styles.input}
