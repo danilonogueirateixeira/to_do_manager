@@ -6,6 +6,10 @@ const img = require('../assets/ToDoList.png');
     
 
 export default class Login extends Component{
+    
+    static navigationOptions = {
+        header: null
+    };
 
     state = {
         email: this.props.email,
@@ -35,7 +39,11 @@ export default class Login extends Component{
                            onPress={() => Alert.alert(`Email: ${this.state.email} \nPassword: ${this.state.password}`)} />
                         <View style={styles.textConteiner}>
                             <Text>Not a member? Let's </Text>
-                            <Text style={styles.textRegister}>
+                            <Text style={styles.textRegister}
+                                onPress={() => {
+                                    const {navigate} = this.props.navigation;
+                                    navigate('pageRegister');
+                                }} >
                                 Register
                             </Text>
                         </View>
