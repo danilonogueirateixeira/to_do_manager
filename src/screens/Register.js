@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { SafeAreaView, KeyboardAvoidingView, View, Image, Text, TextInput,Button, StyleSheet, Alert } from 'react-native';
-
+import { createUserOnFirebaseAsync } from '../services/FirebaseApi';
 const img = require('../assets/ToDoList.png');
 
 export default class Register extends Component {
@@ -14,7 +14,7 @@ export default class Register extends Component {
         password: '',
     }
 
-    render() {
+    render() {   
         return (
             <SafeAreaView style={{ flex: 1}}>
                 <KeyboardAvoidingView style={styles.container}
@@ -35,11 +35,26 @@ export default class Register extends Component {
                             secureTextEntry={true}
                             onChangeText={password => this.setState({ password })} />
                         <Button title='Register User'
-                            onPress={() => Alert.alert(`Email: ${this.state.email}\nPassword: ${this.state.password}`)} />
+                            onPress={() => this._createUserAsync()}/>
                     </View>
                 </KeyboardAvoidingView>
             </SafeAreaView>
         )
+    }
+
+    async _createUserAsync() {
+        try {
+            const user = await createUserOnFirebaseAsync(this.state.email, this.state.password);
+            Alert.alert('User Created', `User ${user.email} has succesfuly been created!`,
+                [{
+                    text: 'Ok', onPress: () => {
+                        this.props.navigation.goBack();
+                    }
+                }]
+            );
+        } catch (error){
+            Alert.alert('Create User Failed!', error.message);
+        }
     }
 }
 
