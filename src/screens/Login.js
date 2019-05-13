@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { SafeAreaView, KeyboardAvoidingView, View, Image, TextInput, Button, Text, StyleSheet, Alert} from 'react-native';
 import { signInOnFirebaseAsync } from '../services/FirebaseApi';
+import { StackActions, NavigationActions } from 'react-navigation';
 
 const img = require('../assets/ToDoList.png');
 
@@ -57,7 +58,11 @@ export default class Login extends Component{
     async _signInAsync() {
         try {
             const user = await signInOnFirebaseAsync(this.state.email, this.state.password);
-            Alert.alert("User Authenticated", `User ${user.email} has succesfuly been authenticated!`);
+            const resetNavigation = StackActions.reset({
+                index: 0,
+                actions: [NavigationActions.navigate({routeName: 'pageTasksList'})]
+            });
+            this.props.navigation.dispatch(resetNavigation);
         } catch (error){
             Alert.alert("Login Failed", error.message);
         }
