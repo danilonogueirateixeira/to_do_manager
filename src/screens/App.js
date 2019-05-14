@@ -1,46 +1,51 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
+import React, { Component } from 'react';
+import { View, ActivityIndicator, StyleSheet, Alert } from 'react-native';
+import { StackActions, NavigationActions } from 'react-navigation';
+import { currentFirebaseUser } from '../services/FirebaseApi';
 
-import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+export default class App extends Component {
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+    static novigationOptions = {
+        header: null
+    }
 
-type Props = {};
-export default class App extends Component<Props> {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.bigBlue}>Big Blue</Text>
-        <Text style={styles.smallred}>Small Red</Text>
-      </View>
-    );
-  }
+    render() {
+        return (
+            <View style={StyleSheet.container}>
+                <ActivityIndicator style={styles.loading} />
+            </View>
+        );
+    }
+
+    async componentDidMount() {
+        let resetNavigation = StackActions.reset({
+            index: 0,
+            actions: [NavigationActions.navigate({ routeName: 'pageLogin' })]
+        });
+
+        try {
+            const user = await currentFirebaseUser();
+            if (user) {
+                resetNavigation = StackActions.reset({
+                    index: 0,
+                    actions: [NavigationActions.navigate({ routeName: 'pageTasksList' })]
+                });
+            }
+            this.props.navigation.dispatch(resetNavigation);
+        } catch (error) {
+            this.props.navigation.dispatch(resetNavigation);    
+        }
+    }
 }
 
 const styles = StyleSheet.create({
-  container:{
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  bigBlue:{
-    color: 'blue',
-    fontSize: 50
-  },
-  smallred:{
-    color: 'red',
-    fontSize: 20
-  }
-})
-
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    loading: {
+        width: 50,
+        height: 50
+    }
+});
