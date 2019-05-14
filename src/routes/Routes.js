@@ -1,5 +1,5 @@
 import { createStackNavigator, createBottomTabNavigator, createAppContainer } from 'react-navigation';
-import { Login, Register, ToDoTasks, DoneTasks } from '../screens/Screens';
+import { App, Login, Register, ToDoTasks, DoneTasks } from '../screens/Screens';
 import { Platform } from 'react-native';
 
 const taskListTabNavigator = createBottomTabNavigator({
@@ -9,6 +9,7 @@ const taskListTabNavigator = createBottomTabNavigator({
 
 export default Routes = createAppContainer(createStackNavigator(
     {
+        pageApp: { screen: App},
         pageLogin: { screen: Login },
         pageRegister: { screen: Register },
         pageTasksList: {
