@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ActivityIndicator, StyleSheet, Alert } from 'react-native';
+import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { StackActions, NavigationActions } from 'react-navigation';
 import { currentFirebaseUser } from '../services/FirebaseApi';
 
@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     loading: {
+        padding: 50,
         width: 50,
         height: 50
     }
