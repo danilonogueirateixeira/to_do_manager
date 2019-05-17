@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
+import { TaskListView } from '../components/Components';
+import { readTaskFromFirebaseAsync } from '../services/FirebaseApi';
 
 const imgDone = require('../assets/done.png');
 
@@ -11,10 +13,26 @@ export default class Donetasks extends Component {
             (<Image source={imgDone} style={[styles.icon, { tintColor: tintColor}]} />)
     }
 
+
+    state = { 
+        tasks: []
+    }
+
     render() {
         return (
-            <View style={ styles.container}/>
+            <View style={ styles.container} >
+                <TaskListView tasks={this.state.tasks} />
+            </View>
         );
+    }
+
+    componentDidMount(){
+        readTaskFromFirebaseAsync(this._fetchTasks.bind(this));
+    }
+
+    _fetchTasks(tasks) {
+        const tasksToDo = tasks.filter(t => t.isDone);
+        this.setState({ tasks: tasksToDo });
     }
 
 }
